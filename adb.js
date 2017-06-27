@@ -7,7 +7,7 @@ const chalk = require('chalk');
 const colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white'];
 const highlightErrors = process.env['ADB_HIGHLIGHT_ERRORS'] || true;
 const rainbowMode = process.env['ADB_RAINBOW'] || false;
-const errorRegex = new RegExp('error','i');
+const errorRegex = new RegExp('error:','i');
 const adb = require('./index');
 
 function logRawLine(line){
