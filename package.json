@@ -34,7 +34,13 @@
     "gulp-eslint": "^4.0.0",
     "babel-eslint": "^7.2.3"
   },
-  "ava": {
+  "keywords": [
+    "android",
+    "platform tools",
+    "adb",
+    "android sdk"
+    ],
+    "ava": {
     "files": [
       "test/*.js"
     ],
