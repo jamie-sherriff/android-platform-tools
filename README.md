@@ -1,4 +1,9 @@
 # android-platform-tools #
+
+[![Build Status](https://travis-ci.org/jamie-sherriff/android-platform-tools.svg?branch=master)](https://travis-ci.org/jamie-sherriff/android-platform-tools)
+[![Dependency Status](https://david-dm.org/jamie-sherriff/android-platform-tools.svg)](https://david-dm.org/jamie-sherriff/android-platform-tools)
+[![devDependency Status](https://david-dm.org/jamie-sherriff/android-platform-tools/dev-status.svg)](https://david-dm.org/jamie-sherriff/android-platform-tools#info=devDependencies)
+
 This is a fully self contained module that wraps the Android SDK platform tools
 
 This grabs the latest SDK Platform tools from https://developer.android.com/studio/releases/platform-tools.html
