@@ -50,6 +50,11 @@ return adb
 * more customisation of the platform tools path, currently defaults to __dirname and "platform-tools"
 * Also consult TODO.txt
 
+## TroubleShooting ##
+*  EACCESS errors on unix: `Error: EACCES: permission denied`
+  https://docs.npmjs.com/getting-started/fixing-npm-permissions
+* My favourite fix from above is `sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}`
+
 ## Known Issues ##
 * `adb shell` is a bit sluggish for input and will look into this
 * Please add any issues you find to github
