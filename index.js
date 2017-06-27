@@ -14,8 +14,8 @@ function downloadTools(toolDirName) {
 		toolDirName = 'platform-tools';
 	}
 	return new Promise((resolve, reject) =>{
-		const androidToolZipPath = path.join(process.cwd(), 'android-sdk.zip');
-		const androidToolDir = path.join(process.cwd(), toolDirName);
+		const androidToolZipPath = path.join(__dirname, 'android-sdk.zip');
+		const androidToolDir = path.join(__dirname, toolDirName);
 		const downloadUrl = helper.getOSUrl();
 		console.log(`Downloading Android platform tools from: ${downloadUrl}`);
 		const requestOptions = {timeout: 30000, 'User-Agent': helper.getUserAgent()};
@@ -49,7 +49,7 @@ function downloadTools(toolDirName) {
 			.on('finish', ()  => {
 				debug('wstream finished');
 				console.log('Extracting Android SDK');
-				extract(androidToolZipPath, {dir: process.cwd()},(error) =>{
+				extract(androidToolZipPath, {dir: __dirname},(error) =>{
 					if(error){
 						debug(`Extraction failed: ${error}`);
 						reject(error);

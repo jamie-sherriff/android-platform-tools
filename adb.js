@@ -54,7 +54,6 @@ function spawnADB(path) {
 		stdoutToLines(data);
 	});
 }
-
 helper.getToolPaths().then((resolvedPaths) => {
 	if (resolvedPaths !== null) {
 		spawnADB(resolvedPaths.adbPath);

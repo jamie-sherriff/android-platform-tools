@@ -47,7 +47,7 @@ return adb
 * Always welcome 
 
 ## Roadmap ##
-* more customisation of the platform tools path, currently defaults to process.cwd() and "platform-tools"
+* more customisation of the platform tools path, currently defaults to __dirname and "platform-tools"
 * Also consult TODO.txt
 
 ## Known Issues ##

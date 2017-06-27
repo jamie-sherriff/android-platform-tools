@@ -51,8 +51,8 @@ function getToolPaths (platformToolsDirName){
 		platformToolsDirName = 'platform-tools';
 	}
 	const adbBinary = getExecutablebyOS();
-	const adbPath = path.resolve(process.cwd(), platformToolsDirName, adbBinary);
-	const platformToolsPath = path.resolve(process.cwd(), platformToolsDirName);
+	const adbPath = path.resolve(__dirname, platformToolsDirName, adbBinary);
+	const platformToolsPath = path.resolve(__dirname, platformToolsDirName);
 	return fs.pathExists(adbPath).then((exists)=>{
 		if (exists === true){
 			return {adbPath:adbPath, platformToolsPath:platformToolsPath};
