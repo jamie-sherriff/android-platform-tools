@@ -3,7 +3,7 @@ This is a fully self contained module that wraps the Android SDK platform tools
 
 This grabs the latest SDK Platform tools from https://developer.android.com/studio/releases/platform-tools.html
 
-Fully multi platform Tested on windows and Linux. Also should work on Mac OS, please let me know if it does not.
+Fully multi platform and tested on windows and Linux. Also should work on Mac OS, please let me know if it does not.
 
 It will Also store the Android platform tools locally and check it exists at runtime so it does not download each time.
 
@@ -17,7 +17,7 @@ It will Also store the Android platform tools locally and check it exists at run
  
  Returns the usual: `List of devices attached`
  
- #### CLI Customisation ####
+ ## CLI Customisation ##
  The following environment variables are available
  
  * ADB_HIGHLIGHT_ERRORS (Highlights the word error in stdout in red)
@@ -71,7 +71,7 @@ return adb
 * Do a Pull request
 
 ### Legal ###
-*By using this module you agree to any terms and conditions outlined by Google,
+* By using this module you agree to any terms and conditions outlined by Google,
 documented in the NOTICE.txt under the platform tools installation
 
 ### Any Questions? ###
