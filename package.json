@@ -1,0 +1,44 @@
+{
+  "name": "android-platform-tools",
+  "version": "0.0.1",
+  "description": "Fully self contained module that wraps the Android SDK platform tools in node",
+  "main": "index.js",
+  "bin": {
+    "adbn": "adb.js",
+    "adb": "adb.js"
+  },
+  "scripts": {
+    "test": "ava",
+    "lint": "gulp lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamie-sherriff/android-platform-tools.git"
+  },
+  "author": "Jamie Sherriff",
+  "license": "MIT",
+  "homepage": "https://github.com/jamie-sherriff/android-platform-tools",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "debug": "^2.6.8",
+    "extract-zip": "^1.6.5",
+    "fs-extra": "^3.0.1",
+    "progress": "^2.0.0",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "eslint": "^4.0.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^4.0.0",
+    "babel-eslint": "^7.2.3"
+  },
+  "ava": {
+    "files": [
+      "test/*.js"
+    ],
+    "failFast": true,
+    "failWithoutAssertions": true,
+    "verbose": true
+  }
+}

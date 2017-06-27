@@ -1,0 +1,17 @@
+Environment:
+checkSdkExists
+getADBpath
+Parse source.properties to get version
+Add print statement to link to NOTICE.txt and saying by using this package you agree to the terms outlined
+
+check default adb port is in use - clean it if it is
+
+kill adb server after cmd executed
+cache zip files with version number
+
+Unsure how:
+If adb on path ask user what todo
+
+TODO one day
+use sdk versions
+offline caching
