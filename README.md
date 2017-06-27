@@ -12,10 +12,11 @@ It will Also store the Android platform tools locally and check it exists at run
 
 ## Command Line Interface Usage ##
 * `npm install -g android-platform-tools` 
-* `adbn devices` or `adb devices` 
-* `adbn` to avoid path conflicts with any existing android sdk installation with adb
- 
+* This provides an alias for adb `adbn <any adb command here>` or  `adb <any adb command here>` 
+* For example: `adbn devices` or `adb devices`  
  Returns the usual: `List of devices attached`
+* `adbn` to avoid path conflicts with any existing android sdk installation with adb
+
  
  ## CLI Customisation ##
  The following environment variables are available
