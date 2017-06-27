@@ -1,6 +1,4 @@
-/**
- * Created by jamie on 17/06/2017.
- */
+#!/usr/bin/env node
 'use strict';
 const helper = require('./helper');
 const userArgs = process.argv.slice(2); //drop node and .js file

@@ -1,6 +1,3 @@
-/**
- * Created by jamie on 17/06/2017.
- */
 'use strict';
 const fs = require('fs-extra');
 const path = require('path');

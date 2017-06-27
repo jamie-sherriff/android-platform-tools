@@ -4,8 +4,8 @@
   "description": "Fully self contained module that wraps the Android SDK platform tools in node",
   "main": "index.js",
   "bin": {
-    "adbn": "adb.js",
-    "adb": "adb.js"
+    "adbn": "./adb.js",
+    "adb": "./adb.js"
   },
   "scripts": {
     "test": "ava",
