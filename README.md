@@ -1,6 +1,7 @@
 # android-platform-tools #
 
 [![Build Status](https://travis-ci.org/jamie-sherriff/android-platform-tools.svg?branch=master)](https://travis-ci.org/jamie-sherriff/android-platform-tools)
+[![Build status](https://ci.appveyor.com/api/projects/status/xxa5h7vtrgvra895?svg=true)](https://ci.appveyor.com/project/jamie-sherriff/android-platform-tools)
 [![Dependency Status](https://david-dm.org/jamie-sherriff/android-platform-tools.svg)](https://david-dm.org/jamie-sherriff/android-platform-tools)
 [![devDependency Status](https://david-dm.org/jamie-sherriff/android-platform-tools/dev-status.svg)](https://david-dm.org/jamie-sherriff/android-platform-tools#info=devDependencies)
 
