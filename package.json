@@ -1,6 +1,6 @@
 {
   "name": "android-platform-tools",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Fully self contained module that wraps the Android SDK platform tools in node",
   "main": "./index.js",
   "bin": {
