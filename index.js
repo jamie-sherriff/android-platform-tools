@@ -97,5 +97,6 @@ function downloadAndReturnToolPaths(toolPath) {
 			process.exit(1);
 		});
 }
+
 module.exports.downloadAndReturnToolPaths = downloadAndReturnToolPaths;
 module.exports.downloadTools = downloadTools;

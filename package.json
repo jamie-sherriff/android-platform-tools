@@ -41,11 +41,11 @@
     "android sdk"
   ],
   "ava": {
+    "timeout": "30s",
     "files": [
       "test/*.js"
     ],
-    "failFast": true,
-    "failWithoutAssertions": true,
+   "failWithoutAssertions": true,
     "verbose": true
   }
 }

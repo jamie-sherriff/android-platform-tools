@@ -5,6 +5,9 @@
 import test from 'ava';
 const fs = require('fs-extra');
 const path = require('path');
+const helper = require('../helper');
+const util = require('util');
+const execFile = util.promisify(require('child_process').execFile);
 
 const _invalidateRequireCacheForFile = function (filePath) {
 	delete require.cache[require.resolve(filePath)];
@@ -14,6 +17,17 @@ const requireNoCache = function (filePath) {
 	_invalidateRequireCacheForFile(filePath);
 	return require(filePath);
 };
+
+test.before('Kill the adb server', async t => {
+	return helper
+		.getToolPaths('platform-tools')
+		.then((tools) => {
+			if(tools){ //don't run if don't exist
+				return execFile(tools.adbPath, ['kill-server']);
+			}
+			t.pass();
+		});
+});
 
 test.serial('Download SDK via downloadTools', async t => {
 	process.env['ADB_ZIP_CACHE'] = true;
@@ -46,5 +60,68 @@ test.serial('Download SDK via downloadAndReturnToolPaths', async t => {
 			t.truthy(tools);
 			t.truthy(tools.adbPath);
 			t.truthy(tools.platformToolsPath);
+		});
+});
+
+test('Check the CLI returns a version', async t => {
+	return helper
+		.getToolPaths('platform-tools')
+		.then((tools) => {
+			t.truthy(tools);
+			t.truthy(tools.adbPath);
+			t.truthy(tools.platformToolsPath);
+			return execFile(tools.adbPath, ['version']);
+		}).then((execResult)=>{
+			t.regex(execResult.stdout, /Android Debug Bridge version/g);
+			t.regex(execResult.stdout, /Installed as/);
+			t.regex(execResult.stdout, /Revision/);
+			t.is(execResult.stderr, '');
+		});
+});
+
+test('Check the CLI returns an error for incorrect command', async t => {
+	return helper
+		.getToolPaths('platform-tools')
+		.then((tools) => {
+			t.truthy(tools);
+			t.truthy(tools.adbPath);
+			return execFile(tools.adbPath, ['garbage']);
+		})
+		.then((execResult)=>{
+			t.fail('exec Should not get here ' + JSON.stringify(execResult));
+		})
+		.catch((execResult)=>{
+			t.is(execResult.code, 1);
+			t.not(execResult.killed);
+			t.falsy(execResult.signal);
+			t.regex(execResult.stdout, /Android Debug Bridge version/g);
+			t.regex(execResult.stdout, /global options:/);
+			t.regex(execResult.stdout, /general commands:/);
+			t.regex(execResult.stdout, /environment variables:/);
+			t.is(execResult.stderr, '');
+		});
+});
+
+test('Check the CLI can be used', async t => {
+	return helper
+		.getToolPaths('platform-tools')
+		.then((tools) => {
+			t.truthy(tools);
+			t.truthy(tools.adbPath);
+			return execFile(tools.adbPath, ['devices']);
+		}).then((execResult)=>{
+			const expectedStdOutRegex = new RegExp('List of devices attached','g');
+			t.regex(execResult.stdout, expectedStdOutRegex);
+			t.is(execResult.stderr, '');
+		});
+});
+
+test.after.always('Cleanup the adb server', t => {
+	return helper
+		.getToolPaths('platform-tools')
+		.then((tools) => {
+			t.truthy(tools);
+			t.truthy(tools.adbPath);
+			return execFile(tools.adbPath, ['kill-server']);
 		});
 });
