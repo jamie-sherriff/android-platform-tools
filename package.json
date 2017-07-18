@@ -45,7 +45,7 @@
     "files": [
       "test/*.js"
     ],
-   "failWithoutAssertions": true,
+    "failWithoutAssertions": true,
     "verbose": true
   }
 }
