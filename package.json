@@ -28,11 +28,11 @@
     "request": "^2.81.0"
   },
   "devDependencies": {
-    "ava": "^0.21.0",
-    "eslint": "^4.4.1",
-    "gulp": "^3.9.1",
-    "gulp-eslint": "^4.0.0",
-    "babel-eslint": "^7.2.3"
+    "ava": "~0.22.0",
+    "eslint": "~4.4.1",
+    "gulp": "~3.9.1",
+    "gulp-eslint": "~4.0.0",
+    "babel-eslint": "~8.0.0"
   },
   "keywords": [
     "android",
