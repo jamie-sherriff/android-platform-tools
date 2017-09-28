@@ -58,9 +58,9 @@ return adb
 * Also consult TODO.txt
 
 ## TroubleShooting ##
-*  EACCESS errors on unix: `Error: EACCES: permission denied`
+* EACCESS errors on unix: `Error: EACCES: permission denied`
   https://docs.npmjs.com/getting-started/fixing-npm-permissions
-* Be careful on option one because doing a chown on usr/bin can override the sudo command on unix systems
+* Be careful with option one because doing a chown on usr/bin can override the sudo command on unix systems
 
 ## Known Issues ##
 * `adb shell` is a bit sluggish for input and will look into this
