@@ -60,7 +60,7 @@ return adb
 ## TroubleShooting ##
 *  EACCESS errors on unix: `Error: EACCES: permission denied`
   https://docs.npmjs.com/getting-started/fixing-npm-permissions
-* My favourite fix from above is `sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}`
+* Be careful on option one because doing a chown on usr/bin can override the sudo command on unix systems
 
 ## Known Issues ##
 * `adb shell` is a bit sluggish for input and will look into this
