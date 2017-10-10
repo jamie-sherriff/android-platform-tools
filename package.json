@@ -48,7 +48,8 @@
     "android",
     "platform tools",
     "adb",
-    "android sdk"
+    "android sdk",
+    "fastboot"
   ],
   "ava": {
     "timeout": "30s",
