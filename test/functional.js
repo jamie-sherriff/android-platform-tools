@@ -130,7 +130,13 @@ test('Check the adb CLI returns an error for incorrect command', async t => {
 		});
 });
 
-test('Check the CLI can be used', async t => {
+/*
+Run in serial to avoid the error:
+- `error: could not install *smartsocket* listener: cannot bind to 127.0.0.1:5037: Only one usage of each socket address (protocol/network address/port
+normally permitted. (10048)␍␊
+*/
+
+test.serial('Check the CLI can be used', async t => {
 	return helper
 		.getToolPaths('platform-tools')
 		.then((tools) => {
@@ -144,7 +150,7 @@ test('Check the CLI can be used', async t => {
 		});
 });
 
-test('Check adb CLI can be used via js', async t => {
+test.serial('Check adb CLI can be used via js', async t => {
 	return doExecCmd(process.argv0, [adbJsPath, 'devices'])
 		.then((execResult) => {
 			const expectedStdOutRegex = new RegExp('List of devices attached','g');

@@ -1,3 +1,9 @@
+1.1.0 / 2017-10-10 
+==================
+* Don't call process.exit, let error propagate Behaviour change so minor version bump.
+* Fix silly typos in some error conditions
+* Improve test reliability 
+
 1.0.0 / 2017-10-10 
 ==================
 * First proper release

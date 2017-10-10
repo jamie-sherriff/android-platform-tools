@@ -11,7 +11,7 @@ helper.getToolPaths().then((resolvedPaths) => {
 		console.log('Did not find local platform-tools');
 		return adb.downloadAndReturnToolPaths().then((paths) => {
 			console.log(`Platform tools downloaded to: ${paths.platformToolsPath}`);
-			if (paths.sqlite3Path !== null) {
+			if (paths.etc1toolPath !== null) {
 				helper.spawnProcess(paths.etc1toolPath, userArgs);
 			} else {
 				console.error(`encountered unknown error,exiting... ${JSON.stringify(paths)}}`);

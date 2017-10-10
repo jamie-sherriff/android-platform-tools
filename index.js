@@ -63,7 +63,7 @@ function downloadTools(toolDirName) {
 						fs.remove(androidToolZipPath, err => {
 							if (err) {
 								console.error(`removing zip file failed: ${err}`);
-								return reject(err);
+								reject(err);
 							} else {
 								console.log('Removed platform-tools zip file, please specify ADB_ZIP_CACHE if you wish to keep it');
 								resolve({path:androidToolDir, message:'downloadSDK complete'});
@@ -90,11 +90,6 @@ function downloadAndReturnToolPaths(toolPath) {
 				console.error('something went wrong');
 				return exists;
 			}
-		})
-		.catch((error) => {
-			console.error(`encountered error: ${error} ,exiting...`);
-			console.error(error.stack);
-			process.exit(1);
 		});
 }
 
