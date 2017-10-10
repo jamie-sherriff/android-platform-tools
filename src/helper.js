@@ -3,10 +3,17 @@ const fs = require('fs-extra');
 const path = require('path');
 const os = require('os');
 const debug = require('debug')('adb:helper');
+const spawn = require('child_process').spawn;
+const chalk = require('chalk');
+const colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white'];
+const highlightErrors = process.env['ADB_HIGHLIGHT_ERRORS'] || true;
+const rainbowMode = process.env['ADB_RAINBOW'] || false;
+const errorRegex = new RegExp('error:', 'i');
+
 const WINDOWS_URL = 'https://dl.google.com/android/repository/platform-tools-latest-windows.zip';
 const LINUX_URL = 'https://dl.google.com/android/repository/platform-tools-latest-linux.zip';
 const OSX_URL = 'https://dl.google.com/android/repository/platform-tools-latest-darwin.zip';
-const packageJson = require('./package.json');
+const packageJson = require('../package.json');
 
 function getOSUrl() {
 	const currentOS = os.platform();
@@ -24,7 +31,7 @@ function getOSUrl() {
 	}
 }
 
-function getUserAgent () {
+function getUserAgent() {
 	const nodeString = `NodeJs/${process.version}`;
 	const packageString = `${packageJson.name}/${packageJson.version}`;
 	const computerString = `Hostname/${os.hostname()} Platform/${os.platform()} PlatformVersion/${os.release()}`;
@@ -32,39 +39,107 @@ function getUserAgent () {
 }
 
 
-function getExecutablebyOS() {
+function getExecutablebyOS(name) {
+	if(!name){
+		throw new Error('getExecutablebyOS needs a name param');
+	}
 	const currentOS = os.platform();
 	switch (currentOS) {
 	case 'win32':
-		return 'adb.exe';
+		return `${name}.exe`;
 	case 'darwin':
-		return 'adb';
+		return `${name}`;
 	case 'linux':
-		return 'adb';
+		return `${name}`;
 	default:
 		console.log(`Using unknown OS of ${currentOS} ,defaulting to linux`);
 		return LINUX_URL;
 	}
 }
-function getToolPaths (platformToolsDirName){
-	if(!platformToolsDirName){
+
+function getToolPaths(platformToolsDirName) {
+	if (!platformToolsDirName) {
 		platformToolsDirName = 'platform-tools';
 	}
-	const adbBinary = getExecutablebyOS();
-	const adbPath = path.resolve(__dirname, platformToolsDirName, adbBinary);
-	const platformToolsPath = path.resolve(__dirname, platformToolsDirName);
-	return fs.pathExists(adbPath).then((exists)=>{
-		if (exists === true){
-			return {adbPath:adbPath, platformToolsPath:platformToolsPath};
+	const adbBinary = getExecutablebyOS('adb');
+	const fastBootBinary = getExecutablebyOS('fastboot');
+	const dmtracedumpBinary = getExecutablebyOS('dmtracedump');
+	const etc1toolBinary = getExecutablebyOS('etc1tool');
+	const hprofconvBinary = getExecutablebyOS('hprof-conv');
+	const sqlite3Binary = getExecutablebyOS('sqlite3');
+	const adbPath = path.resolve(__dirname, '..', platformToolsDirName, adbBinary);
+	const fasbootPath = path.resolve(__dirname, '..', platformToolsDirName, fastBootBinary);
+	const dmtracedumpPath = path.resolve(__dirname, '..', platformToolsDirName, dmtracedumpBinary);
+	const etc1toolPath = path.resolve(__dirname, '..', platformToolsDirName, etc1toolBinary);
+	const hprofconvPath = path.resolve(__dirname, '..', platformToolsDirName, hprofconvBinary);
+	const sqlite3Path = path.resolve(__dirname, '..', platformToolsDirName, sqlite3Binary);
+	const platformToolsPath = path.resolve(__dirname, '..', platformToolsDirName);
+	return fs.pathExists(adbPath).then((exists) => {
+		if (exists === true) {
+			return {
+				adbPath,
+				platformToolsPath,
+				fasbootPath,
+				dmtracedumpPath,
+				etc1toolPath,
+				hprofconvPath,
+				sqlite3Path
+			};
 		} else {
 			return null;
 		}
 	});
 }
 
-module.exports.checkSdkExists = (toolPath)=>{
-	const toolDir = path.resolve(__dirname, toolPath);
-	return fs.pathExists(toolDir).then((exists)=>{
+function logRawLine(line) {
+	process.stdout.write(line);
+}
+
+function lineLoggerMap(line) {
+	if (line.length > 0) {
+		if (rainbowMode) {
+			let randomInt = Math.floor(Math.random() * colors.length);
+			let info = chalk[colors[randomInt]];
+			process.stdout.write(info(line));
+		} else if (highlightErrors) {
+			if (errorRegex.test(line)) {
+				let error = chalk['red'];
+				process.stdout.write((error(line)));
+			} else {
+				logRawLine(line);
+			}
+		} else {
+			logRawLine(line);
+		}
+	}
+}
+
+function stdoutToLines(stdout) {
+	let stdoutString = stdout.toString();
+	stdoutString.split('\r').map(lineLoggerMap);
+}
+
+
+function spawnProcess(path, userArgs) {
+	let spawnOptions = {};
+	if (spawnOptions.inherit) {
+		spawnOptions.stdio = 'inherit';
+	}
+	spawnOptions.stdio = 'inherit';
+	let adbProcess = spawn(path, userArgs, {stdio: ['inherit', null, 'inherit']});
+	console.log(`${path} ${userArgs}`);
+	adbProcess.on('error', (err) => {
+		console.error(`Failed to start child process. ${err}`);
+		process.exit(1);
+	});
+	adbProcess.stdout.on('data', (data) => {
+		stdoutToLines(data);
+	});
+}
+
+module.exports.checkSdkExists = (toolPath) => {
+	const toolDir = path.resolve(__dirname, '..', toolPath);
+	return fs.pathExists(toolDir).then((exists) => {
 		return exists === true;
 	});
 };
@@ -73,3 +148,4 @@ module.exports.getToolPaths = getToolPaths;
 module.exports.getOSUrl = getOSUrl;
 module.exports.getExecutablebyOS = getExecutablebyOS;
 module.exports.getUserAgent = getUserAgent;
+module.exports.spawnProcess = spawnProcess;

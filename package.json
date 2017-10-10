@@ -1,11 +1,13 @@
 {
   "name": "android-platform-tools",
-  "version": "0.0.12",
+  "version": "1.0.0",
   "description": "Fully self contained module that wraps the Android SDK platform tools in node",
   "main": "./index.js",
   "bin": {
-    "adbn": "./adb.js",
-    "adb": "./adb.js"
+    "adbn": "./src/adb.js",
+    "adb": "./src/adb.js",
+    "fastboot": "./src/fastboot.js",
+    "fastbootn": "./src/fastboot.js"
   },
   "scripts": {
     "test": "ava",

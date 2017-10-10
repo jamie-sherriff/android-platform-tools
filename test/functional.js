@@ -4,8 +4,10 @@
 import test from 'ava';
 const fs = require('fs-extra');
 const path = require('path');
-const helper = require('../helper');
+const helper = require('../src/helper');
 const { execFile } = require('child_process');
+const adbJsPath =  require.resolve('../src/adb.js');
+const fasbootJsPath =  require.resolve('../src/fastboot.js');
 
 function doExecCmd(cmd, args){
 	return new Promise((resolve, reject)=>{
@@ -72,15 +74,25 @@ test.serial('Download SDK via downloadAndReturnToolPaths', async t => {
 			t.truthy(tools);
 			t.truthy(tools.adbPath);
 			t.truthy(tools.platformToolsPath);
+			t.truthy(tools.fasbootPath);
+			t.truthy(tools.dmtracedumpPath);
+			t.truthy(tools.etc1toolPath);
+			t.truthy(tools.hprofconvPath);
+			t.truthy(tools.sqlite3Path);
 		});
 });
 
-test('Check the CLI returns a version', async t => {
+test('Check the adb CLI returns a version', async t => {
 	return helper
 		.getToolPaths('platform-tools')
 		.then((tools) => {
 			t.truthy(tools);
 			t.truthy(tools.adbPath);
+			t.truthy(tools.fasbootPath);
+			t.truthy(tools.dmtracedumpPath);
+			t.truthy(tools.etc1toolPath);
+			t.truthy(tools.hprofconvPath);
+			t.truthy(tools.sqlite3Path);
 			t.truthy(tools.platformToolsPath);
 			return doExecCmd(tools.adbPath, ['version']);
 		}).then((execResult)=>{
@@ -91,7 +103,7 @@ test('Check the CLI returns a version', async t => {
 		});
 });
 
-test('Check the CLI returns an error for incorrect command', async t => {
+test('Check the adb CLI returns an error for incorrect command', async t => {
 	return helper
 		.getToolPaths('platform-tools')
 		.then((tools) => {
@@ -127,6 +139,91 @@ test('Check the CLI can be used', async t => {
 			t.is(execResult.stderr, '');
 		});
 });
+
+test('Check adb CLI can be used via js', async t => {
+	return doExecCmd(process.argv0, [adbJsPath, 'devices'])
+		.then((execResult) => {
+			const expectedStdOutRegex = new RegExp('List of devices attached','g');
+			t.regex(execResult.stdout, expectedStdOutRegex);
+			t.is(execResult.stderr, '');
+		});
+});
+
+test('Check the adb CLI returns a version via js', async t => {
+	return doExecCmd(process.argv0, [adbJsPath, 'version'])
+		.then((execResult)=>{
+			t.regex(execResult.stdout, /Android Debug Bridge version/g);
+			t.regex(execResult.stdout, /Installed as/);
+			t.regex(execResult.stdout, /Revision/);
+			t.is(execResult.stderr, '');
+		});
+});
+
+test('Check the fastboot CLI returns a version', async t => {
+	return helper
+		.getToolPaths('platform-tools')
+		.then((tools) => {
+			t.truthy(tools);
+			t.truthy(tools.fasbootPath);
+			return doExecCmd(tools.fasbootPath, ['--version']);
+		}).then((execResult)=>{
+			t.regex(execResult.stdout, /fastboot version/i);
+			t.regex(execResult.stdout, /Installed as/);
+			t.is(execResult.stderr, '');
+		});
+});
+
+test('Check the fastboot CLI returns help', async t => {
+	return helper
+		.getToolPaths('platform-tools')
+		.then((tools) => {
+			t.truthy(tools);
+			t.truthy(tools.fasbootPath);
+			return doExecCmd(tools.fasbootPath, ['--help']);
+		}).then((execResult)=>{
+			t.fail('exec Should not get here ' + JSON.stringify(execResult));
+		})
+		.catch((execResult)=>{
+			t.regex(execResult.stderr, /usage: fastboot/);
+			t.regex(execResult.stderr, /flashing/);
+			t.regex(execResult.stderr, /flashing lock/);
+			t.regex(execResult.stderr, /flashing unlock/);
+			t.regex(execResult.stderr, /erase/);
+			t.regex(execResult.stderr, /update <filename>/);
+			t.is(execResult.stdout, '');
+		});
+});
+
+test('Check the fastboot CLI returns an error for incorrect command', async t => {
+	return helper
+		.getToolPaths('platform-tools')
+		.then((tools) => {
+			t.truthy(tools);
+			t.truthy(tools.fasbootPath);
+			return doExecCmd(tools.fasbootPath, ['--garbage']);
+		})
+		.then((execResult)=>{
+			t.fail('exec Should not get here ' + JSON.stringify(execResult));
+		})
+		.catch((execResult)=>{
+			t.is(execResult.code, 1);
+			t.not(execResult.killed);
+			t.falsy(execResult.signal);
+			t.regex(execResult.stderr, /unknown option/);
+			t.regex(execResult.stderr, /-- garbage/);
+			t.is(execResult.stdout, '');
+		});
+});
+
+test('Check the fastboot cli returns a version via js', async t => {
+	return doExecCmd(process.argv0, [fasbootJsPath, '--version'])
+		.then((execResult)=>{
+			t.regex(execResult.stdout, /fastboot version/i);
+			t.regex(execResult.stdout, /Installed as/);
+			t.is(execResult.stderr, '');
+		});
+});
+
 
 test.after.always('Cleanup the adb server', t => {
 	return helper
