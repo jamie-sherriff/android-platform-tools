@@ -1,17 +1,27 @@
 /**
  * Created by jamie on 20/06/2017.
  */
-const helper = require('../helper');
+const helper = require('../src/helper');
 const os = require('os');
 import test from 'ava';
 
-test('getExecutablebyOS', t => {
-	const adbExec = helper.getExecutablebyOS();
+
+test('undefined getExecutablebyOS throws', t => {
+	const error = t.throws(() => {
+		helper.getExecutablebyOS();
+	}, Error);
+
+	t.is(error.message, 'getExecutablebyOS needs a name param');
+});
+
+test('adb getExecutablebyOS', t => {
+	const adbExec = helper.getExecutablebyOS('adb');
 	if(os.platform() === 'win32'){
 		t.true(/.exe/.test(adbExec));
 	} else{
 		t.false(/.exe/.test(adbExec));
 	}
+	t.true(/adb/.test(adbExec));
 });
 
 test('getOSUrl', t => {

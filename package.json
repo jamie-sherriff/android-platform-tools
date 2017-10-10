@@ -1,11 +1,21 @@
 {
   "name": "android-platform-tools",
-  "version": "0.0.12",
+  "version": "1.0.0",
   "description": "Fully self contained module that wraps the Android SDK platform tools in node",
   "main": "./index.js",
   "bin": {
-    "adbn": "./adb.js",
-    "adb": "./adb.js"
+    "adbn": "./src/adb.js",
+    "fastbootn": "./src/fastboot.js",
+    "etc1tooln": "./src/etc1tool.js",
+    "hprof-convn": "./src/hprof-conv.js",
+    "sqlite3n": "./src/sqlite3.js",
+    "dmtracedumpn": "./src/dmtracedump.js",
+    "adb": "./src/adb.js",
+    "fastboot": "./src/fastboot.js",
+    "etc1tool": "./src/etc1tool.js",
+    "hprof-conv": "./src/hprof-conv.js",
+    "sqlite3": "./src/sqlite3.js",
+    "dmtracedump": "./src/dmtracedump.js"
   },
   "scripts": {
     "test": "ava",
@@ -29,7 +39,7 @@
   },
   "devDependencies": {
     "ava": "^0.22.0",
-    "eslint": "^4.7.2",
+    "eslint": "^4.8.0",
     "gulp": "^3.9.1",
     "gulp-eslint": "^4.0.0",
     "babel-eslint": "^8.0.1"
@@ -38,7 +48,8 @@
     "android",
     "platform tools",
     "adb",
-    "android sdk"
+    "android sdk",
+    "fastboot"
   ],
   "ava": {
     "timeout": "30s",

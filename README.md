@@ -22,6 +22,8 @@ It will Also store the Android platform tools locally and check it exists at run
 * For example: `adbn devices` or `adb devices`  
  Returns the usual: `List of devices attached`
 * `adbn` to avoid path conflicts with any existing android sdk installation with adb
+* Version 1.0.0+ Now provides aliases for fastboot, etc1tool, dmtracedump, hprof-conv and sqlite3
+* As with adb they have their respective n suffixes (fastbootn, etc1tooln, dmtracedumpn, hprof-convn and sqlite3n)
 
  
 ## CLI Customisation ##
@@ -41,7 +43,7 @@ return adb
     .then((tools) => {
         const toolsPath = tools.path;
     });
-//downloadWithValidationAndAdb
+//downloadWithValidationAndPaths
 return adb
     .downloadAndReturnToolPaths()
     .then((tools) => {
@@ -49,6 +51,18 @@ return adb
         const platformToolsPath = tools.platformToolsPath;
     });
 ~~~~
+
+With Version 1.0.0 downloadAndReturnToolPaths now returns an object with the following properties:
+~~~
+adbPath
+platformToolsPath
+fasbootPath
+dmtracedumpPath
+etc1toolPath
+hprofconvPath
+sqlite3Path
+~~~
+
 
 ## Contributions ##
 * Always welcome 

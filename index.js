@@ -1,5 +1,5 @@
 'use strict';
-const helper = require('./helper');
+const helper = require('./src/helper');
 const fs = require('fs-extra');
 const path = require('path');
 const debug = require('debug')('adb:index');
