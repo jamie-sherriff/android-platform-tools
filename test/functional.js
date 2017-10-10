@@ -209,7 +209,8 @@ test('Check the fastboot CLI returns an error for incorrect command', async t =>
 			t.is(execResult.code, 1);
 			t.not(execResult.killed);
 			t.falsy(execResult.signal);
-			t.regex(execResult.stderr, /unknown option/);
+			//unrecognized option on unix  and unknown option on windows
+			t.regex(execResult.stderr, /(unknown option|unrecognized option)/);
 			t.regex(execResult.stderr, /-- garbage/);
 			t.is(execResult.stdout, '');
 		});
