@@ -6,13 +6,13 @@ const adb = require('../index');
 
 helper.getToolPaths().then((resolvedPaths) => {
 	if (resolvedPaths !== null) {
-		helper.spawnProcess(resolvedPaths.adbPath, userArgs);
+		helper.spawnProcess(resolvedPaths.hprofconvPath, userArgs);
 	} else {
 		console.log('Did not find local platform-tools');
 		return adb.downloadAndReturnToolPaths().then((paths) => {
 			console.log(`Platform tools downloaded to: ${paths.platformToolsPath}`);
-			if (paths.adbPath !== null) {
-				helper.spawnProcess(paths.adbPath, userArgs);
+			if (paths.sqlite3Path !== null) {
+				helper.spawnProcess(paths.hprofconvPath, userArgs);
 			} else {
 				console.error(`encountered unknown error,exiting... ${JSON.stringify(paths)}}`);
 				process.exit(1);

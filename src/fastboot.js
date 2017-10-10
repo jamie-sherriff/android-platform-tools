@@ -4,7 +4,6 @@ const helper = require('./helper');
 const userArgs = process.argv.slice(2); //drop node and .js file
 const adb = require('../index');
 
-
 helper.getToolPaths().then((resolvedPaths) => {
 	if (resolvedPaths !== null) {
 		helper.spawnProcess(resolvedPaths.fasbootPath, userArgs);

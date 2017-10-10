@@ -39,7 +39,6 @@ function getUserAgent() {
 	return `${packageString} ${nodeString} ${computerString}`;
 }
 
-
 function getExecutablebyOS(name) {
 	if(!name){
 		throw new Error('getExecutablebyOS needs a name param');
