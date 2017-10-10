@@ -9,11 +9,13 @@
     "etc1tooln": "./src/etc1tool.js",
     "hprof-convn": "./src/hprof-conv.js",
     "sqlite3n": "./src/sqlite3.js",
+    "dmtracedumpn": "./src/dmtracedump.js",
     "adb": "./src/adb.js",
     "fastboot": "./src/fastboot.js",
     "etc1tool": "./src/etc1tool.js",
     "hprof-conv": "./src/hprof-conv.js",
-    "sqlite3": "./src/sqlite3.js"
+    "sqlite3": "./src/sqlite3.js",
+    "dmtracedump": "./src/dmtracedump.js"
   },
   "scripts": {
     "test": "ava",

@@ -8,6 +8,10 @@ const helper = require('../src/helper');
 const { execFile } = require('child_process');
 const adbJsPath =  require.resolve('../src/adb.js');
 const fasbootJsPath =  require.resolve('../src/fastboot.js');
+const dmtracedumpPath =  require.resolve('../src/dmtracedump.js');
+const etc1toolPath =  require.resolve('../src/etc1tool.js');
+const hprofConvPath =  require.resolve('../src/hprof-conv.js');
+const sqlite3Path =  require.resolve('../src/sqlite3.js');
 
 function doExecCmd(cmd, args){
 	return new Promise((resolve, reject)=>{
@@ -225,6 +229,56 @@ test('Check the fastboot cli returns a version via js', async t => {
 			t.is(execResult.stderr, '');
 		});
 });
+
+test('Check the dmtracedump cli returns something via js', async t => {
+	return doExecCmd(process.argv0, [dmtracedumpPath, '-garbage'])
+		.then((execResult)=>{
+			t.regex(execResult.stderr, /usage:/);
+			t.regex(execResult.stderr, /dmtracedump/);
+			t.regex(execResult.stderr, /trace-file-name/);
+			t.regex(execResult.stderr, /[-ho]/);
+			t.regex(execResult.stderr, /[-d trace-file-name]/);
+			t.is(execResult.stdout, '');
+		});
+});
+
+
+test('Check the etc1tool cli returns something via js', async t => {
+	return doExecCmd(process.argv0, [etc1toolPath, '--help'])
+		.then((execResult)=>{
+			t.regex(execResult.stderr, /etc1tool/);
+			t.regex(execResult.stderr, /infile/);
+			t.regex(execResult.stderr, /--encode/);
+			t.regex(execResult.stderr, /--encodeNoHeader/);
+			t.regex(execResult.stderr, /create an ETC1 file from a PNG file./);
+			t.regex(execResult.stderr, /If outfile is not specified, an outfile path is constructed from infile/);
+			t.is(execResult.stdout, '');
+		});
+});
+
+test('Check the hprof-conv cli returns something via js', async t => {
+	return doExecCmd(process.argv0, [hprofConvPath, '-help'])
+		.then((execResult)=>{
+			t.regex(execResult.stderr, /hprof-conv/);
+			t.regex(execResult.stderr, /unknown option/);
+			t.regex(execResult.stderr, /Usage: hprof-conf/);
+			t.regex(execResult.stderr, /infile outfile/);
+			t.is(execResult.stdout, '');
+		});
+});
+
+test('Check the sqlite3 cli returns something via js', async t => {
+	return doExecCmd(process.argv0, [sqlite3Path, '-help'])
+		.then((execResult)=>{
+			t.regex(execResult.stderr, /sqlite3/);
+			t.regex(execResult.stderr, /FILENAME is the name of an SQLite database/);
+			t.regex(execResult.stderr, /OPTIONS include:/);
+			t.regex(execResult.stderr, /-version/);
+			t.regex(execResult.stderr, /show SQLite version/);
+			t.is(execResult.stdout, '');
+		});
+});
+
 
 
 test.after.always('Cleanup the adb server', t => {
