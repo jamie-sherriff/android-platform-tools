@@ -260,7 +260,7 @@ test('Check the hprof-conv cli returns something via js', async t => {
 	return doExecCmd(process.argv0, [hprofConvPath, '-help'])
 		.then((execResult)=>{
 			t.regex(execResult.stderr, /hprof-conv/);
-			t.regex(execResult.stderr, /unknown option/);
+			t.regex(execResult.stderr, /(unknown option|invalid option)/);//unix is invalid option
 			t.regex(execResult.stderr, /Usage: hprof-conf/);
 			t.regex(execResult.stderr, /infile outfile/);
 			t.is(execResult.stdout, '');
