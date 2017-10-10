@@ -8,6 +8,7 @@ const chalk = require('chalk');
 const colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white'];
 const highlightErrors = process.env['ADB_HIGHLIGHT_ERRORS'] || true;
 const rainbowMode = process.env['ADB_RAINBOW'] || false;
+const moreLogging = process.env['TOOL_LOGGING'] || false;
 const errorRegex = new RegExp('error:', 'i');
 
 const WINDOWS_URL = 'https://dl.google.com/android/repository/platform-tools-latest-windows.zip';
@@ -126,13 +127,15 @@ function spawnProcess(path, userArgs) {
 		spawnOptions.stdio = 'inherit';
 	}
 	spawnOptions.stdio = 'inherit';
-	let adbProcess = spawn(path, userArgs, {stdio: ['inherit', null, 'inherit']});
-	console.log(`${path} ${userArgs}`);
-	adbProcess.on('error', (err) => {
+	let toolProcess = spawn(path, userArgs, {stdio: ['inherit', null, 'inherit']});
+	if(moreLogging) {
+		console.log(`${path} ${userArgs}`);
+	}
+	toolProcess.on('error', (err) => {
 		console.error(`Failed to start child process. ${err}`);
 		process.exit(1);
 	});
-	adbProcess.stdout.on('data', (data) => {
+	toolProcess.stdout.on('data', (data) => {
 		stdoutToLines(data);
 	});
 }
