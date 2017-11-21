@@ -204,7 +204,7 @@ test('Check the fastboot CLI returns help', async t => {
 			t.regex(execResult.stdout, /erase/);
 			t.regex(execResult.stdout, /update <filename>/);
 			t.is(execResult.stderr, '');
-		})
+		});
 });
 
 test('Check the fastboot CLI returns an error for incorrect command', async t => {
