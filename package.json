@@ -19,7 +19,8 @@
   },
   "scripts": {
     "test": "ava",
-    "lint": "gulp lint"
+    "lint": "gulp lint",
+    "lint-fix": "gulp lint-fix"
   },
   "repository": {
     "type": "git",
