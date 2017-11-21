@@ -1,3 +1,6 @@
+1.1.0 / 2017-11-21 
+* Fix failing tests due to changed output in android tools when querying help
+
 1.1.0 / 2017-10-10 
 ==================
 * Don't call process.exit, let error propagate Behaviour change so minor version bump.

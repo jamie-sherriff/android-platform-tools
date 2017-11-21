@@ -60,6 +60,7 @@ test.serial('Download SDK via downloadTools', async t => {
 			t.truthy(tools.path);
 			t.truthy(tools.message);
 			t.truthy(tools.zipPath);
+			t.snapshot(Object.keys(tools));
 			return fs.exists(tools.zipPath);
 		})
 		.then((zipPath) => {
@@ -83,6 +84,7 @@ test.serial('Download SDK via downloadAndReturnToolPaths', async t => {
 			t.truthy(tools.etc1toolPath);
 			t.truthy(tools.hprofconvPath);
 			t.truthy(tools.sqlite3Path);
+			t.snapshot(Object.keys(tools));
 		});
 });
 
@@ -98,6 +100,7 @@ test('Check the adb CLI returns a version', async t => {
 			t.truthy(tools.hprofconvPath);
 			t.truthy(tools.sqlite3Path);
 			t.truthy(tools.platformToolsPath);
+			t.snapshot(Object.keys(tools));
 			return doExecCmd(tools.adbPath, ['version']);
 		}).then((execResult)=>{
 			t.regex(execResult.stdout, /Android Debug Bridge version/g);
@@ -142,6 +145,7 @@ test.serial('Check the CLI can be used', async t => {
 		.then((tools) => {
 			t.truthy(tools);
 			t.truthy(tools.adbPath);
+			t.snapshot(Object.keys(tools));
 			return doExecCmd(tools.adbPath, ['devices']);
 		}).then((execResult) => {
 			const expectedStdOutRegex = new RegExp('List of devices attached','g');
@@ -175,6 +179,7 @@ test('Check the fastboot CLI returns a version', async t => {
 		.then((tools) => {
 			t.truthy(tools);
 			t.truthy(tools.fasbootPath);
+			t.snapshot(Object.keys(tools));
 			return doExecCmd(tools.fasbootPath, ['--version']);
 		}).then((execResult)=>{
 			t.regex(execResult.stdout, /fastboot version/i);
@@ -189,19 +194,17 @@ test('Check the fastboot CLI returns help', async t => {
 		.then((tools) => {
 			t.truthy(tools);
 			t.truthy(tools.fasbootPath);
+			t.snapshot(Object.keys(tools));
 			return doExecCmd(tools.fasbootPath, ['--help']);
 		}).then((execResult)=>{
-			t.fail('exec Should not get here ' + JSON.stringify(execResult));
+			t.regex(execResult.stdout, /usage: fastboot/);
+			t.regex(execResult.stdout, /flashing/);
+			t.regex(execResult.stdout, /flashing lock/);
+			t.regex(execResult.stdout, /flashing unlock/);
+			t.regex(execResult.stdout, /erase/);
+			t.regex(execResult.stdout, /update <filename>/);
+			t.is(execResult.stderr, '');
 		})
-		.catch((execResult)=>{
-			t.regex(execResult.stderr, /usage: fastboot/);
-			t.regex(execResult.stderr, /flashing/);
-			t.regex(execResult.stderr, /flashing lock/);
-			t.regex(execResult.stderr, /flashing unlock/);
-			t.regex(execResult.stderr, /erase/);
-			t.regex(execResult.stderr, /update <filename>/);
-			t.is(execResult.stdout, '');
-		});
 });
 
 test('Check the fastboot CLI returns an error for incorrect command', async t => {
@@ -210,6 +213,7 @@ test('Check the fastboot CLI returns an error for incorrect command', async t =>
 		.then((tools) => {
 			t.truthy(tools);
 			t.truthy(tools.fasbootPath);
+			t.snapshot(Object.keys(tools));
 			return doExecCmd(tools.fasbootPath, ['--garbage']);
 		})
 		.then((execResult)=>{
@@ -293,6 +297,7 @@ test.after.always('Cleanup the adb server', t => {
 		.then((tools) => {
 			t.truthy(tools);
 			t.truthy(tools.adbPath);
+			t.snapshot(Object.keys(tools));
 			return doExecCmd(tools.adbPath, ['kill-server']);
 		});
 });

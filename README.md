@@ -75,6 +75,8 @@ sqlite3Path
 * EACCESS errors on unix: `Error: EACCES: permission denied`
   https://docs.npmjs.com/getting-started/fixing-npm-permissions
 * Be careful with option one because doing a chown on usr/bin can override the sudo command on unix systems
+* `EPERM: operation not permitted, unlink 'C:%HOMEPATH%\AppData\Roaming\npm\node_modules\android-platform-tools\platform-tools\AdbWinApi.dll'` On windows
+to, to fix it means adb is still running try a `adb kill-server`
 
 ## Known Issues ##
 * `adb shell` is a bit sluggish for input and will look into this
