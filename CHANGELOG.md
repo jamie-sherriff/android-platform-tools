@@ -1,4 +1,10 @@
+1.2.0 / 2017-12-27 
+==================
+* Fix failing tests, MacOs test coverage
+* Update dependencies
+
 1.1.0 / 2017-11-21 
+==================
 * Fix failing tests due to changed output in android tools when querying help
 
 1.1.0 / 2017-10-10 
