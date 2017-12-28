@@ -108,3 +108,5 @@ crashlytics-build.properties
 fabric.properties
 platform-tools/
 android-sdk.zip
+
+\.idea/codeStyles/codeStyleConfig\.xml
