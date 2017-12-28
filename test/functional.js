@@ -105,7 +105,7 @@ test('Check the adb CLI returns a version', async t => {
 		}).then((execResult)=>{
 			t.regex(execResult.stdout, /Android Debug Bridge version/g);
 			t.regex(execResult.stdout, /Installed as/);
-			t.regex(execResult.stdout, /Revision/);
+			t.regex(execResult.stdout, /Version\s/);
 			t.is(execResult.stderr, '');
 		});
 });
@@ -125,11 +125,8 @@ test('Check the adb CLI returns an error for incorrect command', async t => {
 			t.is(execResult.code, 1);
 			t.not(execResult.killed);
 			t.falsy(execResult.signal);
-			t.regex(execResult.stdout, /Android Debug Bridge version/gm);
-			t.regex(execResult.stdout, /global options:/);
-			t.regex(execResult.stdout, /general commands:/);
-			t.regex(execResult.stdout, /environment variables:/);
-			t.is(execResult.stderr, '');
+			t.is(execResult.stdout, '');
+			t.regex(execResult.stderr, /adb: usage: unknown command garbage/gm);
 		});
 });
 
@@ -150,7 +147,10 @@ test.serial('Check the CLI can be used', async t => {
 		}).then((execResult) => {
 			const expectedStdOutRegex = new RegExp('List of devices attached','g');
 			t.regex(execResult.stdout, expectedStdOutRegex);
-			t.is(execResult.stderr, '');
+			console.log(execResult.stderr);
+			if (execResult.stderr.length > 0) {
+				t.regex(execResult.stderr, /daemon started successfully/gim);
+			}
 		});
 });
 
@@ -168,7 +168,7 @@ test('Check the adb CLI returns a version via js', async t => {
 		.then((execResult)=>{
 			t.regex(execResult.stdout, /Android Debug Bridge version/g);
 			t.regex(execResult.stdout, /Installed as/);
-			t.regex(execResult.stdout, /Revision/);
+			t.regex(execResult.stdout, /Version\s/);
 			t.is(execResult.stderr, '');
 		});
 });
@@ -270,7 +270,7 @@ test('Check the hprof-conv cli returns something via js', async t => {
 	return doExecCmd(process.argv0, [hprofConvPath, '-help'])
 		.then((execResult)=>{
 			t.regex(execResult.stderr, /hprof-conv/);
-			t.regex(execResult.stderr, /(unknown option|invalid option)/);//unix is invalid option
+			t.regex(execResult.stderr, /(unknown option|invalid option|illegal option)/);//linux is invalid option macOs is illegal
 			t.regex(execResult.stderr, /Usage: hprof-conf/);
 			t.regex(execResult.stderr, /infile outfile/);
 			t.is(execResult.stdout, '');
