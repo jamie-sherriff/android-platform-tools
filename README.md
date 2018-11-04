@@ -81,6 +81,7 @@ to, to fix it means adb is still running try a `adb kill-server`
 ## Known Issues ##
 * `adb shell` is a bit sluggish for input and will look into this
 * Please add any issues you find to github
+* linting doesn't work under node 11 due to graceful-fs sub dependency
 
 ### Running Tests ###
 * `npm test`
