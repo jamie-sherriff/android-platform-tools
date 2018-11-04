@@ -198,11 +198,7 @@ test('Check the fastboot CLI returns help', async t => {
 			return doExecCmd(tools.fasbootPath, ['--help']);
 		}).then((execResult)=>{
 			t.regex(execResult.stdout, /usage: fastboot/);
-			t.regex(execResult.stdout, /flashing/);
-			t.regex(execResult.stdout, /flashing lock/);
-			t.regex(execResult.stdout, /flashing unlock/);
-			t.regex(execResult.stdout, /erase/);
-			t.regex(execResult.stdout, /update <filename>/);
+			t.regex(execResult.stdout, /advanced:/);
 			t.is(execResult.stderr, '');
 		});
 });

@@ -1,3 +1,7 @@
+1.3.0 / 2017-12-27 
+==================
+* Bump major versions of depdendicies
+
 1.2.0 / 2017-12-27 
 ==================
 * Fix failing tests, MacOs test coverage
