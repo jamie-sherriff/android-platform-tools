@@ -70,7 +70,7 @@ function getToolPaths(platformToolsDirName) {
 	const hprofconvBinary = getExecutablebyOS('hprof-conv');
 	const sqlite3Binary = getExecutablebyOS('sqlite3');
 	const adbPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, adbBinary);
-	const fasbootPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, fastBootBinary);
+	const fastbootPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, fastBootBinary);
 	const dmtracedumpPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, dmtracedumpBinary);
 	const etc1toolPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, etc1toolBinary);
 	const hprofconvPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, hprofconvBinary);
@@ -81,7 +81,7 @@ function getToolPaths(platformToolsDirName) {
 			return {
 				adbPath,
 				platformToolsPath,
-				fasbootPath,
+				fastbootPath,
 				dmtracedumpPath,
 				etc1toolPath,
 				hprofconvPath,

@@ -79,7 +79,7 @@ test.serial('Download SDK via downloadAndReturnToolPaths', async t => {
 			t.truthy(tools);
 			t.truthy(tools.adbPath);
 			t.truthy(tools.platformToolsPath);
-			t.truthy(tools.fasbootPath);
+			t.truthy(tools.fastbootPath);
 			t.truthy(tools.dmtracedumpPath);
 			t.truthy(tools.etc1toolPath);
 			t.truthy(tools.hprofconvPath);
@@ -94,7 +94,7 @@ test('Check the adb CLI returns a version', async t => {
 		.then((tools) => {
 			t.truthy(tools);
 			t.truthy(tools.adbPath);
-			t.truthy(tools.fasbootPath);
+			t.truthy(tools.fastbootPath);
 			t.truthy(tools.dmtracedumpPath);
 			t.truthy(tools.etc1toolPath);
 			t.truthy(tools.hprofconvPath);
@@ -178,9 +178,9 @@ test('Check the fastboot CLI returns a version', async t => {
 		.getToolPaths('platform-tools')
 		.then((tools) => {
 			t.truthy(tools);
-			t.truthy(tools.fasbootPath);
+			t.truthy(tools.fastbootPath);
 			t.snapshot(Object.keys(tools));
-			return doExecCmd(tools.fasbootPath, ['--version']);
+			return doExecCmd(tools.fastbootPath, ['--version']);
 		}).then((execResult)=>{
 			t.regex(execResult.stdout, /fastboot version/i);
 			t.regex(execResult.stdout, /Installed as/);
@@ -193,9 +193,9 @@ test('Check the fastboot CLI returns help', async t => {
 		.getToolPaths('platform-tools')
 		.then((tools) => {
 			t.truthy(tools);
-			t.truthy(tools.fasbootPath);
+			t.truthy(tools.fastbootPath);
 			t.snapshot(Object.keys(tools));
-			return doExecCmd(tools.fasbootPath, ['--help']);
+			return doExecCmd(tools.fastbootPath, ['--help']);
 		}).then((execResult)=>{
 			t.regex(execResult.stdout, /usage: fastboot/);
 			t.regex(execResult.stdout, /advanced:/);
@@ -208,9 +208,9 @@ test('Check the fastboot CLI returns an error for incorrect command', async t =>
 		.getToolPaths('platform-tools')
 		.then((tools) => {
 			t.truthy(tools);
-			t.truthy(tools.fasbootPath);
+			t.truthy(tools.fastbootPath);
 			t.snapshot(Object.keys(tools));
-			return doExecCmd(tools.fasbootPath, ['--garbage']);
+			return doExecCmd(tools.fastbootPath, ['--garbage']);
 		})
 		.then((execResult)=>{
 			t.fail('exec Should not get here ' + JSON.stringify(execResult));

@@ -56,7 +56,7 @@ With Version 1.0.0 downloadAndReturnToolPaths now returns an object with the fol
 ~~~
 adbPath
 platformToolsPath
-fasbootPath
+fastbootPath
 dmtracedumpPath
 etc1toolPath
 hprofconvPath
