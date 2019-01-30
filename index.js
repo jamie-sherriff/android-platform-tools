@@ -7,6 +7,8 @@ const request = require('request');
 const ProgressBar = require('progress');
 const extract = require('extract-zip');
 const zipCache = process.env['ADB_ZIP_CACHE'] || null;
+const WORKING_DIRECTORY = process.cwd();
+
 
 //TODO add a option useLocalZip
 function downloadTools(toolDirName) {
@@ -14,8 +16,8 @@ function downloadTools(toolDirName) {
 		toolDirName = 'platform-tools';
 	}
 	return new Promise((resolve, reject) =>{
-		const androidToolZipPath = path.join(__dirname, 'android-sdk.zip');
-		const androidToolDir = path.join(__dirname, toolDirName);
+		const androidToolZipPath = path.join(WORKING_DIRECTORY, 'android-sdk.zip');
+		const androidToolDir = path.join(WORKING_DIRECTORY, toolDirName);
 		const downloadUrl = helper.getOSUrl();
 		console.log(`Downloading Android platform tools from: ${downloadUrl}`);
 		const requestOptions = {timeout: 30000, 'User-Agent': helper.getUserAgent()};
@@ -49,7 +51,7 @@ function downloadTools(toolDirName) {
 			.on('finish', ()  => {
 				debug('wstream finished');
 				console.log('Extracting Android SDK');
-				extract(androidToolZipPath, {dir: __dirname},(error) =>{
+				extract(androidToolZipPath, {dir: WORKING_DIRECTORY},(error) =>{
 					if(error){
 						debug(`Extraction failed: ${error}`);
 						reject(error);

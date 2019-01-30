@@ -15,6 +15,7 @@ const WINDOWS_URL = 'https://dl.google.com/android/repository/platform-tools-lat
 const LINUX_URL = 'https://dl.google.com/android/repository/platform-tools-latest-linux.zip';
 const OSX_URL = 'https://dl.google.com/android/repository/platform-tools-latest-darwin.zip';
 const packageJson = require('../package.json');
+const WORKING_DIRECTORY = process.cwd();
 
 function getOSUrl() {
 	const currentOS = os.platform();
@@ -57,6 +58,7 @@ function getExecutablebyOS(name) {
 	}
 }
 
+
 function getToolPaths(platformToolsDirName) {
 	if (!platformToolsDirName) {
 		platformToolsDirName = 'platform-tools';
@@ -67,13 +69,13 @@ function getToolPaths(platformToolsDirName) {
 	const etc1toolBinary = getExecutablebyOS('etc1tool');
 	const hprofconvBinary = getExecutablebyOS('hprof-conv');
 	const sqlite3Binary = getExecutablebyOS('sqlite3');
-	const adbPath = path.resolve(__dirname, '..', platformToolsDirName, adbBinary);
-	const fasbootPath = path.resolve(__dirname, '..', platformToolsDirName, fastBootBinary);
-	const dmtracedumpPath = path.resolve(__dirname, '..', platformToolsDirName, dmtracedumpBinary);
-	const etc1toolPath = path.resolve(__dirname, '..', platformToolsDirName, etc1toolBinary);
-	const hprofconvPath = path.resolve(__dirname, '..', platformToolsDirName, hprofconvBinary);
-	const sqlite3Path = path.resolve(__dirname, '..', platformToolsDirName, sqlite3Binary);
-	const platformToolsPath = path.resolve(__dirname, '..', platformToolsDirName);
+	const adbPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, adbBinary);
+	const fasbootPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, fastBootBinary);
+	const dmtracedumpPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, dmtracedumpBinary);
+	const etc1toolPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, etc1toolBinary);
+	const hprofconvPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, hprofconvBinary);
+	const sqlite3Path = path.resolve(WORKING_DIRECTORY, platformToolsDirName, sqlite3Binary);
+	const platformToolsPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName);
 	return fs.pathExists(adbPath).then((exists) => {
 		if (exists === true) {
 			return {
@@ -140,7 +142,7 @@ function spawnProcess(path, userArgs) {
 }
 
 module.exports.checkSdkExists = (toolPath) => {
-	const toolDir = path.resolve(__dirname, '..', toolPath);
+	const toolDir = path.resolve(WORKING_DIRECTORY, toolPath);
 	return fs.pathExists(toolDir).then((exists) => {
 		return exists === true;
 	});
