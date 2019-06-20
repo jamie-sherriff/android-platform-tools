@@ -15,6 +15,14 @@ It will Also store the Android platform tools locally and check it exists at run
 ## Requirements ##
 * NodeJs 6+ recommended NodeJs 4 should also work
 
+## NPX Usage ##
+```
+$ npx android-platform-tools devices
+npx: installed 80 in 2.914s
+List of devices attached
+```
+
+
 ## Command Line Interface Usage ##
 * `npm install -g android-platform-tools` 
 * This provides an alias for adb `adbn <any adb command here>` or  `adb <any adb command here>` 

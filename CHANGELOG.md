@@ -1,3 +1,8 @@
+2.0.1 / 2019-01-30 
+==================
+* Fix issue #3 Custom paths not working
+
+
 2.0.0 / 2019-01-30 
 ==================
 * Major version bump due to solving dirnames issue #1

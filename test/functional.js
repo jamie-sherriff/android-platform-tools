@@ -126,7 +126,7 @@ test('Check the adb CLI returns an error for incorrect command', async t => {
 			t.not(execResult.killed);
 			t.falsy(execResult.signal);
 			t.is(execResult.stdout, '');
-			t.regex(execResult.stderr, /adb: usage: unknown command garbage/gm);
+			t.regex(execResult.stderr, /unknown command garbage/gm);
 		});
 });
 
