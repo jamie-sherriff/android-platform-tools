@@ -12,6 +12,7 @@ const dmtracedumpPath =  require.resolve('../src/dmtracedump.js');
 const etc1toolPath =  require.resolve('../src/etc1tool.js');
 const hprofConvPath =  require.resolve('../src/hprof-conv.js');
 const sqlite3Path =  require.resolve('../src/sqlite3.js');
+const WORKING_DIRECTORY = process.cwd();
 
 function doExecCmd(cmd, args){
 	return new Promise((resolve, reject)=>{
@@ -26,6 +27,22 @@ function doExecCmd(cmd, args){
 		});
 	});
 }
+
+function checkFileExists(filePath){
+	return fs.pathExists(filePath);
+}
+
+async function validateToolsExist(tools, t){
+	t.truthy(await checkFileExists(tools.adbPath));
+	t.truthy(await checkFileExists(tools.platformToolsPath));
+	t.truthy(await checkFileExists(tools.fastbootPath));
+	t.truthy(await checkFileExists(tools.dmtracedumpPath));
+	t.truthy(await checkFileExists(tools.etc1toolPath));
+	t.truthy(await checkFileExists(tools.hprofconvPath));
+	t.truthy(await checkFileExists(tools.sqlite3Path));
+}
+
+
 
 const _invalidateRequireCacheForFile = function (filePath) {
 	delete require.cache[require.resolve(filePath)];
@@ -44,6 +61,35 @@ test.before('Kill the adb server', async t => {
 				return doExecCmd(tools.adbPath, ['kill-server']);
 			}
 			t.pass();
+		});
+});
+
+test.serial('Download SDK with custom path using downloadAndReturnToolPaths', async t => {
+	const adb = requireNoCache('../index');
+	return adb.downloadAndReturnToolPaths('custom-path1')
+		.then(async(tools) => {
+			t.truthy(tools);
+			t.truthy(tools.adbPath);
+			t.truthy(tools.platformToolsPath);
+			t.truthy(tools.fastbootPath);
+			t.truthy(tools.dmtracedumpPath);
+			t.truthy(tools.etc1toolPath);
+			t.truthy(tools.hprofconvPath);
+			t.truthy(tools.sqlite3Path);
+			t.snapshot(Object.keys(tools));
+			await validateToolsExist(tools, t);
+		});
+});
+
+test.serial('Download SDK with custom path using downloadTools', async t => {
+	const adb = requireNoCache('../index');
+	return adb.downloadTools('custom-path2')
+		.then(async(tools) => {
+			t.truthy(tools);
+			t.truthy(tools.path);
+			t.truthy(tools.message);
+			t.is(tools.path, path.resolve(WORKING_DIRECTORY, 'custom-path2'));
+			t.snapshot(Object.keys(tools));
 		});
 });
 
@@ -295,5 +341,8 @@ test.after.always('Cleanup the adb server', t => {
 			t.truthy(tools.adbPath);
 			t.snapshot(Object.keys(tools));
 			return doExecCmd(tools.adbPath, ['kill-server']);
+		}).then(async ()=>{
+			await fs.remove(path.resolve(WORKING_DIRECTORY, 'custom-path1'));
+			await fs.remove(path.resolve(WORKING_DIRECTORY, 'custom-path2'));
 		});
 });

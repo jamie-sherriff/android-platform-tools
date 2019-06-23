@@ -58,8 +58,7 @@ function downloadTools(toolDirName) {
 					} else{
 						console.log('Extraction complete');
 						debug('downloadSDK complete');
-
-						fs.move(path.join(WORKING_DIRECTORY,'platform-tools'), androidToolDir,  copyError => {
+						fs.move(path.join(WORKING_DIRECTORY,'platform-tools'), androidToolDir, { overwrite: true },  copyError => {
 							if (copyError){
 								console.error(`copy dir failed: ${copyError}`);
 								reject(copyError);
@@ -97,7 +96,7 @@ function downloadAndReturnToolPaths(toolPath) {
 		})
 		.then((exists) => {
 			if (exists === true) {
-				return helper.getToolPaths();
+				return helper.getToolPaths(toolPath);
 			} else {
 				console.error('something went wrong');
 				return exists;
