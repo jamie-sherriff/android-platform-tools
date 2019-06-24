@@ -110,3 +110,5 @@ platform-tools/
 android-sdk.zip
 
 \.idea/codeStyles/codeStyleConfig\.xml
+custom-path1/
+custom-path2/
