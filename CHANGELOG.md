@@ -2,12 +2,10 @@
 ==================
 * Fix issue #3 Custom paths not working
 
-
 2.0.0 / 2019-01-30 
 ==================
 * Major version bump due to solving dirnames issue #1
 * fix fastboot spelling mistake issue #2
-
 
 1.3.0 / 2017-12-27 
 ==================
