@@ -1,6 +1,6 @@
 {
   "name": "android-platform-tools",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Fully self contained module that wraps the Android SDK platform tools in node",
   "main": "./index.js",
   "bin": {
@@ -34,16 +34,16 @@
     "chalk": "^2.4.1",
     "debug": "^4.1.0",
     "extract-zip": "^1.6.7",
-    "fs-extra": "^7.0.0",
+    "fs-extra": "^8.0.1",
     "progress": "^2.0.1",
     "request": "^2.88.0"
   },
   "devDependencies": {
     "ava": "^0.25.0",
+    "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "gulp": "^3.9.1",
-    "gulp-eslint": "^5.0.0",
-    "babel-eslint": "^10.0.1"
+    "gulp-eslint": "^5.0.0"
   },
   "keywords": [
     "android",

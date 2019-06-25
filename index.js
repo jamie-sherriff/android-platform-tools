@@ -7,26 +7,71 @@ const request = require('request');
 const ProgressBar = require('progress');
 const extract = require('extract-zip');
 const zipCache = process.env['ADB_ZIP_CACHE'] || null;
-const WORKING_DIRECTORY = process.cwd();
+const DEFAULT_BASE_DIRECTORY =  path.resolve(__dirname);
+
+function unzipPackage(androidToolDir, androidToolZipPath, ) {
+	return new Promise((resolve, reject) => {
+		if (zipCache !== null) {
+			resolve({path: androidToolDir, message: 'downloadSDK complete', zipPath: androidToolZipPath});
+			return;
+		}
+		fs.remove(androidToolZipPath, removeError => {
+			if (removeError) {
+				console.error(`removing zip file failed: ${removeError}`);
+				reject(removeError);
+			} else {
+				console.log('Removed platform-tools zip file, please specify ADB_ZIP_CACHE if you wish to keep it');
+				resolve({path: androidToolDir, message: 'downloadSDK complete'});
+			}
+		});
+		console.log('success!');
+});
+}
+
+function onDownloadFinish(androidToolDir, androidToolZipPath, baseDirectory) {
+	return new Promise((resolve, reject) => {
+		extract(androidToolZipPath, {dir: baseDirectory}, (error) => {
+			if (error) {
+				debug(`Extraction failed: ${error}`);
+				reject(error);
+			} else {
+				console.log('Extraction complete');
+				debug('downloadSDK complete');
+				resolve('Success');
+			}
+		});
+	}).then(()=>{
+		const fullToolPath = path.join(baseDirectory, 'platform-tools');
+		if(fullToolPath !== androidToolDir){
+			debug(`Moving ${fullToolPath} to ${androidToolDir}`);
+			return fs.move(path.join(baseDirectory, 'platform-tools'), androidToolDir, {overwrite: true});
+		}
+	}).then(() => {
+		return unzipPackage(androidToolDir, androidToolZipPath, baseDirectory);
+	});
+}
 
 
 //TODO add a option useLocalZip
-function downloadTools(toolDirName) {
-	if(!toolDirName){
+function downloadTools(toolDirName, baseDirectory) {
+	if (!toolDirName) {
 		toolDirName = 'platform-tools';
 	}
-	return new Promise((resolve, reject) =>{
-		const androidToolZipPath = path.join(WORKING_DIRECTORY, 'android-sdk.zip');
-		const androidToolDir = path.join(WORKING_DIRECTORY, toolDirName);
+	if (!baseDirectory) {
+		baseDirectory = DEFAULT_BASE_DIRECTORY;
+	}
+	return new Promise((resolve, reject) => {
+		const androidToolZipPath = path.join(baseDirectory, 'android-sdk.zip');
+		const androidToolDir = path.join(baseDirectory, toolDirName);
 		const downloadUrl = helper.getOSUrl();
 		console.log(`Downloading Android platform tools from: ${downloadUrl}`);
 		const requestOptions = {timeout: 30000, 'User-Agent': helper.getUserAgent()};
 		request(downloadUrl, requestOptions)
-			.on('error', (error)  => {
+			.on('error', (error) => {
 				debug(`Request Error ${error}`);
 				reject(error);
 			})
-			.on('response', (response)  => {
+			.on('response', (response) => {
 				const len = parseInt(response.headers['content-length'], 10);
 				let bar = new ProgressBar('  downloading [:bar] :percent :etas', {
 					complete: '=',
@@ -36,7 +81,7 @@ function downloadTools(toolDirName) {
 				});
 
 				response.on('data', function (chunk) {
-					if (chunk.length){
+					if (chunk.length) {
 						bar.tick(chunk.length);
 					}
 				});
@@ -48,55 +93,36 @@ function downloadTools(toolDirName) {
 				debug(response.headers['content-type']);
 			})
 			.pipe(fs.createWriteStream(androidToolZipPath))
-			.on('finish', ()  => {
+			.on('finish', () => {
 				debug('wstream finished');
 				console.log('Extracting Android SDK');
-				extract(androidToolZipPath, {dir: WORKING_DIRECTORY},(error) =>{
-					if(error){
-						debug(`Extraction failed: ${error}`);
+				return onDownloadFinish(androidToolDir, androidToolZipPath, baseDirectory)
+					.then((pathObject) => {
+						resolve(pathObject);
+					})
+					.catch((error) => {
 						reject(error);
-					} else{
-						console.log('Extraction complete');
-						debug('downloadSDK complete');
-						fs.move(path.join(WORKING_DIRECTORY,'platform-tools'), androidToolDir, { overwrite: true },  copyError => {
-							if (copyError){
-								console.error(`copy dir failed: ${copyError}`);
-								reject(copyError);
-							} else{
-								if(zipCache !== null){
-									resolve({path:androidToolDir, message:'downloadSDK complete', zipPath:androidToolZipPath});
-									return;
-								}
-								fs.remove(androidToolZipPath, removeError => {
-									if (removeError) {
-										console.error(`removing zip file failed: ${removeError}`);
-										reject(removeError);
-									} else {
-										console.log('Removed platform-tools zip file, please specify ADB_ZIP_CACHE if you wish to keep it');
-										resolve({path:androidToolDir, message:'downloadSDK complete'});
-									}
-								});
-							}
-
-							console.log('success!');
-						}); // copies file
-					}
-				});
+					});
 			});
 	});
 }
 
-function downloadAndReturnToolPaths(toolPath) {
-	if(!toolPath){
+function downloadAndReturnToolPaths(toolPath, baseDirectory) {
+	if (!toolPath) {
 		toolPath = 'platform-tools';
 	}
+	if (!baseDirectory) {
+		baseDirectory = DEFAULT_BASE_DIRECTORY;
+	}
+	debug(`Using toolpath: ${toolPath}`);
+	debug(`Using baseDirectory: ${baseDirectory}`);
 	return downloadTools(toolPath)
 		.then((platformTools) => {
-			return helper.checkSdkExists(platformTools.path);
+			return helper.checkSdkExists(platformTools.path, baseDirectory);
 		})
 		.then((exists) => {
 			if (exists === true) {
-				return helper.getToolPaths(toolPath);
+				return helper.getToolPaths(toolPath, baseDirectory);
 			} else {
 				console.error('something went wrong');
 				return exists;

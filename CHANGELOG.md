@@ -1,3 +1,7 @@
+3.0.0 / 2019-06-25
+==================
+* change logic for issue #1 to default to __dirname but can be overridden
+
 2.0.1 / 2019-06-25
 ==================
 * Fix issue #3 Custom paths not working
