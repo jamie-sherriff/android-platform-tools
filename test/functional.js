@@ -364,7 +364,7 @@ test('Check the sqlite3 cli returns something via js', async t => {
 
 
 
-test.after.always('Cleanup the adb server', t => {
+test.after.always('Cleanup the adb server and remove test dirs', t => {
 	return helper
 		.getToolPaths('platform-tools')
 		.then((tools) => {

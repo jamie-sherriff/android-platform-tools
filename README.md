@@ -15,6 +15,11 @@ It will Also store the Android platform tools locally and check it exists at run
 ## Requirements ##
 * NodeJs 8+ recommended NodeJs 4/6 should also work but are unsupported
 
+## Version 3 changes ##
+* BREAKING: change logic for issue #1 to default to __dirname but can be overridden instead
+- The following syntax is an example 
+```adb.downloadAndReturnToolPaths('custom-path3', process.cwd())```
+
 ## NPX Usage ##
 ```
 $ npx android-platform-tools devices

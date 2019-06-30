@@ -53,13 +53,7 @@ function onDownloadFinish(androidToolDir, androidToolZipPath, baseDirectory) {
 
 
 //TODO add a option useLocalZip
-function downloadTools(toolDirName, baseDirectory) {
-	if (!toolDirName) {
-		toolDirName = 'platform-tools';
-	}
-	if (!baseDirectory) {
-		baseDirectory = DEFAULT_BASE_DIRECTORY;
-	}
+function downloadTools(toolDirName= 'platform-tools', baseDirectory = DEFAULT_BASE_DIRECTORY) {
 	return new Promise((resolve, reject) => {
 		const androidToolZipPath = path.join(baseDirectory, 'android-sdk.zip');
 		const androidToolDir = path.join(baseDirectory, toolDirName);
@@ -107,13 +101,7 @@ function downloadTools(toolDirName, baseDirectory) {
 	});
 }
 
-function downloadAndReturnToolPaths(toolPath, baseDirectory) {
-	if (!toolPath) {
-		toolPath = 'platform-tools';
-	}
-	if (!baseDirectory) {
-		baseDirectory = DEFAULT_BASE_DIRECTORY;
-	}
+function downloadAndReturnToolPaths(toolPath ='platform-tools', baseDirectory = DEFAULT_BASE_DIRECTORY) {
 	debug(`Using toolpath: ${toolPath}`);
 	debug(`Using baseDirectory: ${baseDirectory}`);
 	return downloadTools(toolPath)
