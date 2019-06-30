@@ -13,7 +13,7 @@ Fully multi platform and tested on windows, Linux and Mac OS. Please let me know
 It will Also store the Android platform tools locally and check it exists at runtime so it does not download each time.
 
 ## Requirements ##
-* NodeJs 6+ recommended NodeJs 4 should also work
+* NodeJs 8+ recommended NodeJs 4/6 should also work but are unsupported
 
 ## NPX Usage ##
 ```

@@ -9,7 +9,7 @@ const extract = require('extract-zip');
 const zipCache = process.env['ADB_ZIP_CACHE'] || null;
 const DEFAULT_BASE_DIRECTORY =  path.resolve(__dirname);
 
-function unzipPackage(androidToolDir, androidToolZipPath, ) {
+function unzipPackage(androidToolDir, androidToolZipPath) {
 	return new Promise((resolve, reject) => {
 		if (zipCache !== null) {
 			resolve({path: androidToolDir, message: 'downloadSDK complete', zipPath: androidToolZipPath});
@@ -25,7 +25,7 @@ function unzipPackage(androidToolDir, androidToolZipPath, ) {
 			}
 		});
 		console.log('success!');
-});
+	});
 }
 
 function onDownloadFinish(androidToolDir, androidToolZipPath, baseDirectory) {
@@ -47,7 +47,7 @@ function onDownloadFinish(androidToolDir, androidToolZipPath, baseDirectory) {
 			return fs.move(path.join(baseDirectory, 'platform-tools'), androidToolDir, {overwrite: true});
 		}
 	}).then(() => {
-		return unzipPackage(androidToolDir, androidToolZipPath, baseDirectory);
+		return unzipPackage(androidToolDir, androidToolZipPath);
 	});
 }
 
