@@ -1,9 +1,9 @@
 3.0.0 / 2019-06-25
 ==================
 * BREAKING: change logic for issue #1 to default to __dirname but can be overridden instead
-- The following syntax is an example 
+* The functions `getToolPaths`, `downloadTools` and `downloadAndReturnToolPaths` take a second parameter of base directory, defaults to `__dirname` of the package installation dir
+- The following syntax is an example to override it
 ```adb.downloadAndReturnToolPaths('custom-path3', process.cwd())```
-
 
 2.0.1 / 2019-06-25
 ==================

@@ -8,6 +8,7 @@ const ProgressBar = require('progress');
 const extract = require('extract-zip');
 const zipCache = process.env['ADB_ZIP_CACHE'] || null;
 const DEFAULT_BASE_DIRECTORY =  path.resolve(__dirname);
+const DEFAULT_TOOL_DIR_NAME = 'platform-tools';
 
 function unzipPackage(androidToolDir, androidToolZipPath) {
 	return new Promise((resolve, reject) => {
@@ -53,7 +54,7 @@ function onDownloadFinish(androidToolDir, androidToolZipPath, baseDirectory) {
 
 
 //TODO add a option useLocalZip
-function downloadTools(toolDirName= 'platform-tools', baseDirectory = DEFAULT_BASE_DIRECTORY) {
+function downloadTools(toolDirName= DEFAULT_TOOL_DIR_NAME, baseDirectory = DEFAULT_BASE_DIRECTORY) {
 	return new Promise((resolve, reject) => {
 		const androidToolZipPath = path.join(baseDirectory, 'android-sdk.zip');
 		const androidToolDir = path.join(baseDirectory, toolDirName);

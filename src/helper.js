@@ -16,6 +16,7 @@ const LINUX_URL = 'https://dl.google.com/android/repository/platform-tools-lates
 const OSX_URL = 'https://dl.google.com/android/repository/platform-tools-latest-darwin.zip';
 const packageJson = require('../package.json');
 const DEFAULT_BASE_DIRECTORY =  path.resolve(__dirname + '../..');
+const DEFAULT_TOOL_DIR_NAME = 'platform-tools';
 
 function getOSUrl() {
 	const currentOS = os.platform();
@@ -59,13 +60,7 @@ function getExecutablebyOS(name) {
 }
 
 
-function getToolPaths(platformToolsDirName, baseDirectory) {
-	if (!platformToolsDirName) {
-		platformToolsDirName = 'platform-tools';
-	}
-	if(!baseDirectory){
-		baseDirectory = DEFAULT_BASE_DIRECTORY;
-	}
+function getToolPaths(platformToolsDirName =  DEFAULT_TOOL_DIR_NAME, baseDirectory = DEFAULT_BASE_DIRECTORY) {
 	const adbBinary = getExecutablebyOS('adb');
 	const fastBootBinary = getExecutablebyOS('fastboot');
 	const dmtracedumpBinary = getExecutablebyOS('dmtracedump');

@@ -17,7 +17,9 @@ It will Also store the Android platform tools locally and check it exists at run
 
 ## Version 3 changes ##
 * BREAKING: change logic for issue #1 to default to __dirname but can be overridden instead
-- The following syntax is an example 
+    - Doesn't make sense to have the CLI install to every directory you call it in.
+    - The functions `getToolPaths`, `downloadTools` and `downloadAndReturnToolPaths` take a second parameter of base directory, defaults to `__dirname` of the package installation dir
+- The following syntax is an example to use the previous behaviour
 ```adb.downloadAndReturnToolPaths('custom-path3', process.cwd())```
 
 ## NPX Usage ##
