@@ -81,6 +81,25 @@ test.serial('Download SDK with custom path using downloadAndReturnToolPaths', as
 		});
 });
 
+test.serial('Download SDK with custom path and custom BaseDir using downloadAndReturnToolPaths', async t => {
+	const adb = requireNoCache('../index');
+	return adb.downloadAndReturnToolPaths('custom-path3', process.cwd())
+		.then(async(tools) => {
+			t.truthy(tools);
+			t.truthy(tools.adbPath);
+			t.truthy(tools.platformToolsPath);
+			t.truthy(tools.fastbootPath);
+			t.truthy(tools.dmtracedumpPath);
+			t.truthy(tools.etc1toolPath);
+			t.truthy(tools.hprofconvPath);
+			t.truthy(tools.sqlite3Path);
+			t.snapshot(Object.keys(tools));
+			await validateToolsExist(tools, t);
+		});
+});
+
+
+
 test.serial('Download SDK with custom path using downloadTools', async t => {
 	const adb = requireNoCache('../index');
 	return adb.downloadTools('custom-path2')
@@ -89,6 +108,18 @@ test.serial('Download SDK with custom path using downloadTools', async t => {
 			t.truthy(tools.path);
 			t.truthy(tools.message);
 			t.is(tools.path, path.resolve(WORKING_DIRECTORY, 'custom-path2'));
+			t.snapshot(Object.keys(tools));
+		});
+});
+
+test.serial('Download SDK with custom path and baseDir using downloadTools', async t => {
+	const adb = requireNoCache('../index');
+	return adb.downloadTools('custom-path4', process.cwd())
+		.then(async(tools) => {
+			t.truthy(tools);
+			t.truthy(tools.path);
+			t.truthy(tools.message);
+			t.is(tools.path, path.resolve(WORKING_DIRECTORY, 'custom-path4'));
 			t.snapshot(Object.keys(tools));
 		});
 });
@@ -333,7 +364,7 @@ test('Check the sqlite3 cli returns something via js', async t => {
 
 
 
-test.after.always('Cleanup the adb server', t => {
+test.after.always('Cleanup the adb server and remove test dirs', t => {
 	return helper
 		.getToolPaths('platform-tools')
 		.then((tools) => {
@@ -344,5 +375,7 @@ test.after.always('Cleanup the adb server', t => {
 		}).then(async ()=>{
 			await fs.remove(path.resolve(WORKING_DIRECTORY, 'custom-path1'));
 			await fs.remove(path.resolve(WORKING_DIRECTORY, 'custom-path2'));
+			await fs.remove(path.resolve(WORKING_DIRECTORY, 'custom-path3'));
+			await fs.remove(path.resolve(WORKING_DIRECTORY, 'custom-path4'));
 		});
 });

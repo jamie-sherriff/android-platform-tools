@@ -1,7 +1,7 @@
 # android-platform-tools #
 
 [![Build Status](https://travis-ci.org/jamie-sherriff/android-platform-tools.svg?branch=master)](https://travis-ci.org/jamie-sherriff/android-platform-tools)
-[![Build status](https://ci.appveyor.com/api/projects/status/xxa5h7vtrgvra895?svg=true)](https://ci.appveyor.com/project/jamie-sherriff/android-platform-tools)
+[![Build status](https://ci.appveyor.com/api/projects/status/xxa5h7vtrgvra895/branch/master?svg=true)](https://ci.appveyor.com/project/jamie-sherriff/android-platform-tools/branch/master)
 [![Dependency Status](https://david-dm.org/jamie-sherriff/android-platform-tools.svg)](https://david-dm.org/jamie-sherriff/android-platform-tools)
 
 This is a fully self contained module that wraps the Android SDK platform tools
@@ -13,7 +13,14 @@ Fully multi platform and tested on windows, Linux and Mac OS. Please let me know
 It will Also store the Android platform tools locally and check it exists at runtime so it does not download each time.
 
 ## Requirements ##
-* NodeJs 6+ recommended NodeJs 4 should also work
+* NodeJs 8+ recommended NodeJs 4/6 should also work but are unsupported
+
+## Version 3 changes ##
+* BREAKING: change logic for issue #1 to default to __dirname but can be overridden instead
+    - Doesn't make sense to have the CLI install to every directory you call it in.
+    - The functions `getToolPaths`, `downloadTools` and `downloadAndReturnToolPaths` take a second parameter of base directory, defaults to `__dirname` of the package installation dir
+- The following syntax is an example to use the previous behaviour
+```adb.downloadAndReturnToolPaths('custom-path3', process.cwd())```
 
 ## NPX Usage ##
 ```

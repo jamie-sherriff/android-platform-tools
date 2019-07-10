@@ -15,7 +15,8 @@ const WINDOWS_URL = 'https://dl.google.com/android/repository/platform-tools-lat
 const LINUX_URL = 'https://dl.google.com/android/repository/platform-tools-latest-linux.zip';
 const OSX_URL = 'https://dl.google.com/android/repository/platform-tools-latest-darwin.zip';
 const packageJson = require('../package.json');
-const WORKING_DIRECTORY = process.cwd();
+const DEFAULT_BASE_DIRECTORY =  path.resolve(__dirname + '../..');
+const DEFAULT_TOOL_DIR_NAME = 'platform-tools';
 
 function getOSUrl() {
 	const currentOS = os.platform();
@@ -59,23 +60,20 @@ function getExecutablebyOS(name) {
 }
 
 
-function getToolPaths(platformToolsDirName) {
-	if (!platformToolsDirName) {
-		platformToolsDirName = 'platform-tools';
-	}
+function getToolPaths(platformToolsDirName =  DEFAULT_TOOL_DIR_NAME, baseDirectory = DEFAULT_BASE_DIRECTORY) {
 	const adbBinary = getExecutablebyOS('adb');
 	const fastBootBinary = getExecutablebyOS('fastboot');
 	const dmtracedumpBinary = getExecutablebyOS('dmtracedump');
 	const etc1toolBinary = getExecutablebyOS('etc1tool');
 	const hprofconvBinary = getExecutablebyOS('hprof-conv');
 	const sqlite3Binary = getExecutablebyOS('sqlite3');
-	const adbPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, adbBinary);
-	const fastbootPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, fastBootBinary);
-	const dmtracedumpPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, dmtracedumpBinary);
-	const etc1toolPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, etc1toolBinary);
-	const hprofconvPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName, hprofconvBinary);
-	const sqlite3Path = path.resolve(WORKING_DIRECTORY, platformToolsDirName, sqlite3Binary);
-	const platformToolsPath = path.resolve(WORKING_DIRECTORY, platformToolsDirName);
+	const adbPath = path.resolve(baseDirectory, platformToolsDirName, adbBinary);
+	const fastbootPath = path.resolve(baseDirectory, platformToolsDirName, fastBootBinary);
+	const dmtracedumpPath = path.resolve(baseDirectory, platformToolsDirName, dmtracedumpBinary);
+	const etc1toolPath = path.resolve(baseDirectory, platformToolsDirName, etc1toolBinary);
+	const hprofconvPath = path.resolve(baseDirectory, platformToolsDirName, hprofconvBinary);
+	const sqlite3Path = path.resolve(baseDirectory, platformToolsDirName, sqlite3Binary);
+	const platformToolsPath = path.resolve(baseDirectory, platformToolsDirName);
 	return fs.pathExists(adbPath).then((exists) => {
 		if (exists === true) {
 			return {
@@ -141,8 +139,8 @@ function spawnProcess(path, userArgs) {
 	});
 }
 
-module.exports.checkSdkExists = (toolPath) => {
-	const toolDir = path.resolve(WORKING_DIRECTORY, toolPath);
+module.exports.checkSdkExists = (toolPath, baseDirectory) => {
+	const toolDir = path.resolve(baseDirectory, toolPath);
 	return fs.pathExists(toolDir).then((exists) => {
 		return exists === true;
 	});
