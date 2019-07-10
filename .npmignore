@@ -6,6 +6,7 @@ coverage
 .travis.yml
 .jenkins.yml
 .codeclimate.yml
+appveyor.yml
 
 #linters
 .jscsrc
@@ -18,3 +19,8 @@ coverage
 
 #github settings
 .github
+
+#binaries
+platform-tools
+playing
+android-sdk.zip

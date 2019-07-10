@@ -1,3 +1,7 @@
+3.0.1 and 3.0.2 / 2019-07-10
+==================
+* Don't npm publish the platform-tools and android-sdk directories.
+
 3.0.0 / 2019-06-25
 ==================
 * BREAKING: change logic for issue #1 to default to __dirname but can be overridden instead
