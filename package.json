@@ -39,7 +39,7 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "ava": "^0.25.0",
+    "ava": "^5.1.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "gulp": "^3.9.1",
